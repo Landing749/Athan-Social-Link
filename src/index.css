@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+@import 'tailwindcss';
+
+:root {
+  --clay-bg: #f5f0eb;
+  --clay-surface: #faf7f3;
+  --clay-deep: #ede7df;
+  /* shadows are tinted warm-ink rather than pure black — reads as soft
+     matte clay instead of flat plastic sitting on grey drop-shadows */
+  --clay-shadow-rgb: 58, 46, 36;
+  --clay-shadow: rgba(58, 46, 36, 0.14);
+  --clay-highlight: rgba(255, 255, 255, 0.92);
+  --clay-rim: rgba(255, 255, 255, 0.55);
+  --ink: #1a1714;
+  --ink-muted: #6b6460;
+  --accent-lavender: #9b8ec4;
+  --accent-blue: #5e8fc4;
+  --accent-coral: #c47b6b;
+  --accent-mint: #5ea898;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background: var(--clay-bg);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Fine matte grain over the whole canvas — sells the "soft, tactile
+   clay" material instead of a flat digital gradient */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  opacity: 0;
+}
+
+/* Clay surface mixin helper classes */
+.clay {
+  background: linear-gradient(145deg, var(--clay-surface), var(--clay-deep));
+  border-radius: 28px;
+  box-shadow:
+    0 24px 60px -12px rgba(var(--clay-shadow-rgb), 0.22),
+    0 10px 24px -8px rgba(var(--clay-shadow-rgb), 0.14),
+    0 2px 6px rgba(var(--clay-shadow-rgb), 0.08),
+    inset 0 2.5px 0 var(--clay-highlight),
+    inset 0 1px 3px rgba(255, 255, 255, 0.5),
+    inset 0 -4px 10px rgba(var(--clay-shadow-rgb), 0.06);
+}
+
+.clay-btn {
+  background: linear-gradient(160deg, #ffffff, #ede8e0);
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  box-shadow:
+    0 10px 26px -6px rgba(var(--clay-shadow-rgb), 0.22),
+    0 3px 8px rgba(var(--clay-shadow-rgb), 0.12),
+    inset 0 1.5px 0 var(--clay-highlight),
+    inset 0 -3px 6px rgba(var(--clay-shadow-rgb), 0.07);
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease;
+}
+
+.clay-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow:
+    0 18px 40px -8px rgba(var(--clay-shadow-rgb), 0.26),
+    0 6px 14px rgba(var(--clay-shadow-rgb), 0.14),
+    inset 0 1.5px 0 var(--clay-highlight),
+    inset 0 -3px 6px rgba(var(--clay-shadow-rgb), 0.05);
+}
+
+.clay-btn:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow:
+    0 3px 10px rgba(var(--clay-shadow-rgb), 0.18),
+    0 1px 3px rgba(var(--clay-shadow-rgb), 0.10),
+    inset 0 3px 6px rgba(var(--clay-shadow-rgb), 0.14),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.clay-btn-primary {
+  background: linear-gradient(160deg, #2a2420, #1a1714);
+  color: #f5f0eb;
+  box-shadow:
+    0 12px 30px -6px rgba(26, 23, 20, 0.45),
+    0 4px 10px rgba(26, 23, 20, 0.24),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.32);
+}
+
+.clay-btn-primary:hover {
+  box-shadow:
+    0 20px 48px -8px rgba(26, 23, 20, 0.5),
+    0 6px 16px rgba(26, 23, 20, 0.28),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes floatA {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+}
+@keyframes floatB {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-1.5deg); }
+}
+@keyframes floatC {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-14px) rotate(1deg); }
+  66% { transform: translateY(-6px) rotate(-0.5deg); }
+}
+@keyframes floatD {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
