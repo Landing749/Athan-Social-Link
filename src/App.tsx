@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type CSSProperties, type MouseEvent as RMouseEvent } from 'react'
+import { useState, useEffect, useMemo, type CSSProperties } from 'react'
 
 /* ─── Data ─────────────────────────────────────────────────────────────────── */
 
@@ -148,23 +148,23 @@ function hexToRgb(hex: string): string {
 
 function claySoft(elevation: 'sm' | 'md' | 'lg' | 'xl' = 'md', glow?: string) {
   const e = {
-    sm: { y: 8, b: 22, y2: 3, b2: 7 },
-    md: { y: 16, b: 44, y2: 5, b2: 14 },
-    lg: { y: 26, b: 72, y2: 8, b2: 22 },
-    xl: { y: 40, b: 100, y2: 12, b2: 32 },
+    sm: { y: 9, b: 26, y2: 3, b2: 8 },
+    md: { y: 18, b: 50, y2: 6, b2: 16 },
+    lg: { y: 30, b: 82, y2: 9, b2: 26 },
+    xl: { y: 46, b: 114, y2: 14, b2: 36 },
   }[elevation]
   const glowLayer = glow ? `, 0 ${e.y * 0.8}px ${e.b * 1.4}px -${e.b * 0.3}px rgba(${hexToRgb(glow)}, 0.35)` : ''
   return (
-    `0 ${e.y}px ${e.b}px -${Math.round(e.b * 0.2)}px rgba(58,46,36,0.24), ` +
-    `0 ${e.y2}px ${e.b2}px rgba(58,46,36,0.12), ` +
-    `inset 0 2px 0 rgba(255,255,255,0.9), ` +
-    `inset 0 1px 3px rgba(255,255,255,0.5), ` +
-    `inset 0 -4px 9px rgba(58,46,36,0.06)` + glowLayer
+    `0 ${e.y}px ${e.b}px -${Math.round(e.b * 0.2)}px rgba(58,46,36,0.28), ` +
+    `0 ${e.y2}px ${e.b2}px rgba(58,46,36,0.14), ` +
+    `inset 0 2px 0 rgba(255,250,245,0.42), ` +
+    `inset 0 1px 3px rgba(255,250,245,0.28), ` +
+    `inset 0 -4px 9px rgba(58,46,36,0.08)` + glowLayer
   )
 }
 
 function clayPressed() {
-  return '0 3px 10px rgba(58,46,36,0.18), inset 0 3px 6px rgba(58,46,36,0.16), inset 0 -1px 2px rgba(255,255,255,0.55)'
+  return '0 3px 10px rgba(58,46,36,0.2), inset 0 3px 6px rgba(58,46,36,0.18), inset 0 -1px 2px rgba(255,250,245,0.4)'
 }
 
 /* ─── Hooks ─────────────────────────────────────────────────────────────────── */
@@ -243,7 +243,7 @@ function NavItem({ label, onClick }: { label: string; onClick: () => void }) {
         borderRadius: '100px',
         border: 'none',
         cursor: 'pointer',
-        background: hov ? 'linear-gradient(160deg, #fff, #ede8e0)' : 'transparent',
+        background: hov ? 'linear-gradient(160deg, #f7f3ee, #e6ded2)' : 'transparent',
         transform: hov ? 'translateY(-2px)' : 'none',
         boxShadow: hov ? claySoft('sm') : 'none',
         transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
@@ -294,7 +294,7 @@ function ClayTag({ label }: { label: string }) {
         alignItems: 'center',
         padding: '8px 18px',
         borderRadius: '100px',
-        background: 'linear-gradient(160deg, #fff, #ede8e0)',
+        background: 'linear-gradient(160deg, #f7f3ee, #e6ded2)',
         boxShadow: hov ? claySoft('md') : claySoft('sm'),
         transform: hov ? 'translateY(-4px) scale(1.04)' : 'none',
         transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
@@ -525,10 +525,10 @@ function HeroSection() {
               transform: 'translate(-50%, -50%)',
               width: '220px',
               height: '260px',
-              background: 'linear-gradient(145deg, #ffffff, #ede8e0)',
+              background: 'linear-gradient(145deg, #f7f3ee, #e6ded2)',
               borderRadius: '32px',
               boxShadow:
-                '0 40px 80px rgba(0,0,0,0.18), 0 16px 40px rgba(0,0,0,0.10), inset 0 2px 0 rgba(255,255,255,0.95), inset 0 -4px 8px rgba(0,0,0,0.04)',
+                '0 40px 80px rgba(58,46,36,0.18), 0 16px 40px rgba(58,46,36,0.10), inset 0 2px 0 rgba(255,250,245,0.5), inset 0 -4px 8px rgba(58,46,36,0.04)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -551,7 +551,7 @@ function HeroSection() {
                 fontSize: '28px',
               }}
             >
-              <span style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>⚡</span>
+              <span style={{ filter: 'drop-shadow(0 2px 4px rgba(58,46,36,0.2))' }}>⚡</span>
             </div>
             <div style={{ textAlign: 'center' }}>
               <div
@@ -595,7 +595,7 @@ function HeroSection() {
                 borderRadius: '20px',
                 background: `linear-gradient(145deg, ${color}, ${color}cc)`,
                 boxShadow:
-                  '0 8px 24px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
+                  '0 8px 24px rgba(58,46,36,0.12), inset 0 1px 0 rgba(255,250,245,0.4)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -704,14 +704,14 @@ function ClayButton({
         color: '#f5f0eb',
         boxShadow: pressed
           ? clayPressed()
-          : '0 14px 34px -8px rgba(26,23,20,0.5), 0 4px 10px rgba(26,23,20,0.24), inset 0 1.5px 0 rgba(255,255,255,0.14), inset 0 -3px 6px rgba(0,0,0,0.3)',
+          : '0 14px 34px -8px rgba(26,23,20,0.5), 0 4px 10px rgba(26,23,20,0.24), inset 0 1.5px 0 rgba(255,255,255,0.14), inset 0 -3px 6px rgba(58,46,36,0.3)',
         transform: pressed ? 'translateY(2px) scale(0.97)' : 'none',
       }
     : {
         ...base,
         background: pressed
           ? 'linear-gradient(160deg, #e8e2d8, #ddd8ce)'
-          : 'linear-gradient(160deg, #ffffff, #ede8e0)',
+          : 'linear-gradient(160deg, #f7f3ee, #e6ded2)',
         color: '#1a1714',
         boxShadow: pressed ? clayPressed() : claySoft('md'),
         transform: pressed ? 'translateY(2px) scale(0.97)' : 'none',
@@ -765,275 +765,95 @@ function FacebookIcon({ size = 16 }: { size?: number }) {
   )
 }
 
-/* ─── Project Card ───────────────────────────────────────────────────────────── */
+/* ─── Constellation Star ─────────────────────────────────────────────────────── */
+/* A project in the constellation is just a star with its name above it — the
+   glow itself is drawn in the shared SVG layer; this is the HTML hit target,
+   label, and hover reveal that sits on top of it. Clicking opens the full
+   project detail overlay. */
 
-function ProjectCard({
+function ConstellationStar({
   project,
   onOpen,
+  drift,
 }: {
   project: typeof PROJECTS[0]
   onOpen: (p: typeof PROJECTS[0]) => void
+  drift?: { x: number; y: number }
 }) {
   const [hov, setHov] = useState(false)
-  const [rot, setRot] = useState({ x: 0, y: 0 })
-  const cardRef = useRef<HTMLDivElement>(null)
-
-  const sizeMap = { large: 340, medium: 280, small: 240 }
-  const w = sizeMap[project.size as keyof typeof sizeMap]
-  const h = project.size === 'large' ? 400 : project.size === 'small' ? 300 : 340
-
-  const handleMouseMove = (e: RMouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    const dx = (e.clientX - cx) / (rect.width / 2)
-    const dy = (e.clientY - cy) / (rect.height / 2)
-    setRot({ x: dy * -8, y: dx * 8 })
-  }
-
-  const [bg1, bg2] = project.cardBg
+  const dx = drift?.x ?? 0
+  const dy = drift?.y ?? 0
 
   return (
-    <div style={{ width: w, height: h, position: 'relative', perspective: '1400px' }}>
-      {/* Ground contact shadow — shrinks + softens as the card lifts, so the
-          hover state reads as genuine elevation off the canvas rather than
-          just a scale/skew */}
+    <div
+      onClick={() => onOpen(project)}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        position: 'absolute',
+        left: `${project.center.x}%`,
+        top: `${project.center.y}%`,
+        transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`,
+        transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
+        zIndex: hov ? 20 : project.depth,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        cursor: 'pointer',
+        padding: '28px',
+      }}
+    >      {/* Name label — sits above the star, brightens and lifts on hover */}
       <div
-        style={{
-          position: 'absolute',
-          left: '8%',
-          right: '8%',
-          bottom: hov ? '-22px' : '-10px',
-          height: '28px',
-          borderRadius: '50%',
-          background: `radial-gradient(ellipse at center, rgba(${hexToRgb(project.accent)}, ${hov ? 0.28 : 0.16}) 0%, transparent 72%)`,
-          filter: hov ? 'blur(14px)' : 'blur(7px)',
-          opacity: hov ? 0.9 : 0.6,
-          transform: hov ? 'scale(0.86)' : 'scale(1)',
-          transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        ref={cardRef}
-        onMouseEnter={() => setHov(true)}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={() => { setHov(false); setRot({ x: 0, y: 0 }) }}
-        onClick={() => onOpen(project)}
-        style={{
-          width: '100%',
-          height: '100%',
-          borderRadius: '32px',
-          background: `linear-gradient(145deg, ${bg1}, ${bg2})`,
-          boxShadow: hov ? claySoft('xl', project.accent) : claySoft('lg'),
-          transform: hov
-            ? `translateY(-20px) translateZ(60px) scale(1.03) rotateX(${rot.x}deg) rotateY(${rot.y}deg)`
-            : `rotate(${project.rotation}) translateY(0) translateZ(0)`,
-          transformOrigin: 'center center',
-          transformStyle: 'preserve-3d',
-          transition: hov
-            ? 'box-shadow 0.3s ease, transform 0.08s ease'
-            : 'box-shadow 0.4s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          cursor: 'pointer',
-          position: 'relative',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '32px',
-        }}
-      >
-      {/* Accent color bar */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: '32px',
-          right: '32px',
-          height: '3px',
-          borderRadius: '0 0 4px 4px',
-          background: project.accent,
-          opacity: hov ? 1 : 0.5,
-          transition: 'opacity 0.3s',
-        }}
-      />
-
-      {/* Category chip */}
-      <div
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          padding: '5px 12px',
-          borderRadius: '100px',
-          background: project.accentLight,
-          marginBottom: '24px',
-          width: 'fit-content',
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: '10px',
-            fontWeight: 700,
-            letterSpacing: '0.08em',
-            color: project.accent,
-          }}
-        >
-          {project.tech[0].toUpperCase()}
-        </span>
-      </div>
-
-      {/* Project name */}
-      <h3
         style={{
           fontFamily: "'Plus Jakarta Sans', sans-serif",
-          fontSize: project.size === 'large' ? '34px' : '26px',
-          fontWeight: 800,
-          letterSpacing: '-0.03em',
-          lineHeight: 1.1,
-          color: project.textLight ? '#f5f0eb' : '#1a1714',
-          margin: '0 0 12px',
+          fontSize: hov ? '15px' : '13px',
+          fontWeight: 700,
+          letterSpacing: '0.02em',
+          color: hov ? project.accent : '#1a1714',
+          whiteSpace: 'nowrap',
+          marginBottom: '10px',
+          opacity: hov ? 1 : 0.82,
+          transform: hov ? 'translateY(-2px)' : 'none',
+          transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          textShadow: hov ? '0 2px 12px rgba(255,250,245,0.45)' : 'none',
         }}
       >
-        {project.name}
-      </h3>
+        {project.shortName}
+      </div>
 
-      {/* Category */}
-      <p
+      {/* Category — only appears on hover, right under the name */}
+      <div
         style={{
           fontFamily: "'DM Sans', sans-serif",
-          fontSize: '12px',
-          color: project.textLight ? 'rgba(245,240,235,0.6)' : '#9b9490',
-          margin: '0 0 16px',
-          letterSpacing: '0.02em',
+          fontSize: '11px',
+          color: '#6b6460',
+          whiteSpace: 'nowrap',
+          marginBottom: '10px',
+          maxWidth: '220px',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          opacity: hov ? 1 : 0,
+          transform: hov ? 'translateY(0)' : 'translateY(-4px)',
+          transition: 'all 0.25s ease',
+          pointerEvents: 'none',
         }}
       >
         {project.category}
-      </p>
+      </div>
 
-      {/* Description — fades in on hover */}
-      <p
-        style={{
-          fontFamily: "'DM Sans', sans-serif",
-          fontSize: '14px',
-          lineHeight: 1.6,
-          color: project.textLight ? 'rgba(245,240,235,0.8)' : '#6b6460',
-          margin: '0',
-          opacity: hov ? 1 : 0,
-          transform: hov ? 'translateY(0)' : 'translateY(8px)',
-          transition: 'opacity 0.3s ease, transform 0.3s ease',
-          flex: 1,
-        }}
-      >
-        {project.description}
-      </p>
-
-      {/* Action buttons — emerge on hover */}
+      {/* Hit target over the star itself — the glowing dot is drawn in the
+          SVG layer behind; this just makes it clickable/hoverable and grows
+          a soft ring around it on hover */}
       <div
         style={{
-          marginTop: '24px',
-          display: 'flex',
-          gap: '10px',
-          flexWrap: 'wrap',
-          opacity: hov ? 1 : 0,
-          transform: hov ? 'translateY(0)' : 'translateY(12px)',
-          transition: 'opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s',
+          width: hov ? '26px' : '18px',
+          height: hov ? '26px' : '18px',
+          borderRadius: '50%',
+          border: `2px solid ${project.accent}`,
+          opacity: hov ? 0.9 : 0,
+          transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
         }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Live Demo */}
-        <a
-          href={project.liveUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '7px',
-            padding: '9px 18px',
-            borderRadius: '100px',
-            background: project.textLight
-              ? 'linear-gradient(160deg, rgba(255,255,255,0.18), rgba(255,255,255,0.10))'
-              : 'linear-gradient(160deg, #1a1714, #2a2420)',
-            color: project.textLight ? '#f5f0eb' : '#f5f0eb',
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: '11px',
-            fontWeight: 700,
-            letterSpacing: '0.06em',
-            textDecoration: 'none',
-            boxShadow: project.textLight
-              ? '0 4px 14px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)'
-              : '0 6px 20px rgba(26,23,20,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
-            border: project.textLight ? '1px solid rgba(255,255,255,0.2)' : 'none',
-            transition: 'transform 0.18s ease, box-shadow 0.18s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-3px) scale(1.04)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = ''
-          }}
-        >
-          <ExternalLinkIcon size={13} />
-          LIVE DEMO
-        </a>
-
-        {/* View Source */}
-        <a
-          href={project.sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '7px',
-            padding: '9px 18px',
-            borderRadius: '100px',
-            background: 'linear-gradient(160deg, #ffffff, #ede8e0)',
-            color: '#1a1714',
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: '11px',
-            fontWeight: 700,
-            letterSpacing: '0.06em',
-            textDecoration: 'none',
-            boxShadow:
-              '0 4px 14px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -2px 3px rgba(0,0,0,0.04)',
-            transition: 'transform 0.18s ease, box-shadow 0.18s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-3px) scale(1.04)'
-            e.currentTarget.style.boxShadow =
-              '0 8px 24px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.98)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = ''
-            e.currentTarget.style.boxShadow =
-              '0 4px 14px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -2px 3px rgba(0,0,0,0.04)'
-          }}
-        >
-          <GithubIcon size={13} />
-          VIEW SOURCE
-        </a>
-      </div>
-
-      {/* Bottom label shown when not hovered */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '24px',
-          right: '28px',
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          fontSize: '11px',
-          fontWeight: 700,
-          letterSpacing: '0.08em',
-          color: project.textLight ? 'rgba(245,240,235,0.35)' : 'rgba(26,23,20,0.25)',
-          opacity: hov ? 0 : 1,
-          transition: 'opacity 0.2s',
-        }}
-      >
-        HOVER ↗
-      </div>
-      </div>
+      />
     </div>
   )
 }
@@ -1085,7 +905,7 @@ function ProjectDetail({
           borderRadius: '40px',
           background: `linear-gradient(145deg, ${bg1}, ${bg2})`,
           boxShadow:
-            '0 60px 120px rgba(0,0,0,0.35), 0 24px 60px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.85)',
+            '0 60px 120px rgba(58,46,36,0.35), 0 24px 60px rgba(58,46,36,0.2), inset 0 2px 0 rgba(255,250,245,0.42)',
           transform: mounted ? 'scale(1) translateY(0)' : 'scale(0.9) translateY(30px)',
           opacity: mounted ? 1 : 0,
           transition: 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease',
@@ -1102,7 +922,7 @@ function ProjectDetail({
             width: '40px',
             height: '40px',
             borderRadius: '50%',
-            background: 'linear-gradient(160deg, #fff, #ede8e0)',
+            background: 'linear-gradient(160deg, #f7f3ee, #e6ded2)',
             border: 'none',
             cursor: 'pointer',
             display: 'flex',
@@ -1112,7 +932,7 @@ function ProjectDetail({
             fontSize: '16px',
             fontWeight: 700,
             color: '#6b6460',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.9)',
+            boxShadow: '0 4px 12px rgba(58,46,36,0.12), inset 0 1px 0 rgba(255,250,245,0.45)',
             zIndex: 10,
             transition: 'transform 0.18s ease',
           }}
@@ -1197,7 +1017,7 @@ function ProjectDetail({
                   gap: '8px',
                   padding: '12px 24px',
                   borderRadius: '100px',
-                  background: 'linear-gradient(160deg, #ffffff, #ede8e0)',
+                  background: 'linear-gradient(160deg, #f7f3ee, #e6ded2)',
                   color: '#1a1714',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontSize: '12px',
@@ -1205,8 +1025,8 @@ function ProjectDetail({
                   letterSpacing: '0.06em',
                   textDecoration: 'none',
                   boxShadow: btnHov === 'src'
-                    ? '0 14px 36px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.98)'
-                    : '0 6px 20px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.95)',
+                    ? '0 14px 36px rgba(58,46,36,0.18), inset 0 1px 0 rgba(255,250,245,0.55)'
+                    : '0 6px 20px rgba(58,46,36,0.12), inset 0 1px 0 rgba(255,250,245,0.5)',
                   transform: btnHov === 'src' ? 'translateY(-4px) scale(1.04)' : 'none',
                   transition: 'all 0.2s ease',
                 }}
@@ -1280,7 +1100,7 @@ function ProjectDetail({
                     padding: '16px 20px',
                     borderRadius: '20px',
                     background: 'linear-gradient(160deg, rgba(255,255,255,0.7), rgba(245,240,235,0.5))',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7)',
+                    boxShadow: '0 4px 12px rgba(58,46,36,0.08), inset 0 1px 0 rgba(255,255,255,0.7)',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
@@ -1316,7 +1136,7 @@ function ProjectDetail({
                   padding: '16px 20px',
                   borderRadius: '20px',
                   background: 'linear-gradient(160deg, rgba(255,255,255,0.7), rgba(245,240,235,0.5))',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7)',
+                  boxShadow: '0 4px 12px rgba(58,46,36,0.08), inset 0 1px 0 rgba(255,255,255,0.7)',
                 }}
               >
                 <div
@@ -1376,7 +1196,7 @@ function ProjectDetail({
               padding: '48px',
               borderRadius: '32px',
               background: 'linear-gradient(145deg, rgba(255,255,255,0.5), rgba(240,235,228,0.4))',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8)',
+              boxShadow: '0 8px 32px rgba(58,46,36,0.08), inset 0 1px 0 rgba(255,250,245,0.4)',
               textAlign: 'center',
             }}
           >
@@ -1458,7 +1278,7 @@ function FooterCTABtn({
                 : 'linear-gradient(160deg, #2a2420, #1a1714)',
               color: '#f5f0eb',
               boxShadow: pressed
-                ? '0 4px 12px rgba(26,23,20,0.3), inset 0 2px 4px rgba(0,0,0,0.3)'
+                ? '0 4px 12px rgba(26,23,20,0.3), inset 0 2px 4px rgba(58,46,36,0.3)'
                 : hov
                 ? '0 20px 50px rgba(26,23,20,0.5), 0 8px 20px rgba(26,23,20,0.3), inset 0 1px 0 rgba(255,255,255,0.12)'
                 : '0 12px 36px rgba(26,23,20,0.4), 0 5px 14px rgba(26,23,20,0.2), inset 0 1px 0 rgba(255,255,255,0.08)',
@@ -1469,13 +1289,13 @@ function FooterCTABtn({
                 ? 'linear-gradient(160deg, #e8e2d8, #ddd8ce)'
                 : hov
                 ? 'linear-gradient(160deg, #fff, #f5f0eb)'
-                : 'linear-gradient(160deg, #ffffff, #ede8e0)',
+                : 'linear-gradient(160deg, #f7f3ee, #e6ded2)',
               color: '#1a1714',
               boxShadow: pressed
-                ? '0 2px 6px rgba(0,0,0,0.10), inset 0 2px 4px rgba(0,0,0,0.08)'
+                ? '0 2px 6px rgba(58,46,36,0.10), inset 0 2px 4px rgba(58,46,36,0.08)'
                 : hov
-                ? '0 18px 48px rgba(0,0,0,0.18), 0 6px 16px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.98)'
-                : '0 8px 28px rgba(0,0,0,0.12), 0 3px 8px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.95)',
+                ? '0 18px 48px rgba(58,46,36,0.18), 0 6px 16px rgba(58,46,36,0.10), inset 0 1px 0 rgba(255,250,245,0.55)'
+                : '0 8px 28px rgba(58,46,36,0.12), 0 3px 8px rgba(58,46,36,0.07), inset 0 1px 0 rgba(255,250,245,0.5)',
               transform: pressed ? 'translateY(2px) scale(0.97)' : hov ? 'translateY(-5px) scale(1.04)' : 'none',
             }),
       }}
@@ -1498,6 +1318,23 @@ function ProjectsSection({ onOpen }: { onOpen: (p: typeof PROJECTS[0]) => void }
   const order = ['acadex', 'forgex', 'athstudios', 'dapres', 'lane-academy']
   const byId = Object.fromEntries(PROJECTS.map((p) => [p.id, p]))
   const links = order.slice(0, -1).map((id, i) => [byId[id], byId[order[i + 1]]] as const)
+
+  // Deterministic pseudo-random scatter of small background stars — filler
+  // points in the constellation, distinct from the project "stars" below.
+  // Memoized so they don't re-roll on every mousemove-driven re-render.
+  const bgStars = useMemo(() => {
+    const rand = (seed: number) => {
+      const x = Math.sin(seed * 12.9898) * 43758.5453
+      return x - Math.floor(x)
+    }
+    return Array.from({ length: 46 }, (_, i) => ({
+      x: rand(i * 3.1) * 100,
+      y: rand(i * 3.1 + 1.7) * 100,
+      r: 0.12 + rand(i * 3.1 + 2.9) * 0.22,
+      delay: rand(i * 3.1 + 4.4) * 5,
+      dur: 2.4 + rand(i * 3.1 + 6.1) * 3,
+    }))
+  }, [])
 
   return (
     <section
@@ -1554,25 +1391,43 @@ function ProjectsSection({ onOpen }: { onOpen: (p: typeof PROJECTS[0]) => void }
         </h2>
       </div>
 
-      {/* Constellation — organic layout with true depth: connector lines +
-          per-card parallax (cards closer to the viewer, higher `depth`,
-          drift further with the cursor than cards further back) */}
+      {/* Constellation — the projects ARE the stars; the small twinkling
+          dots and dotted lines are just the sky and the map connecting
+          them. True depth via connector lines + per-card parallax (cards
+          closer to the viewer, higher `depth`, drift further with the
+          cursor than cards further back). */}
       <div
         style={{
           maxWidth: '1200px',
           margin: '0 auto',
           position: 'relative',
-          minHeight: '840px',
+          minHeight: '520px',
         }}
       >
-        {/* Dotted constellation lines threading the nodes together, drawn
-            behind every card, scaled in % so it always lines up with the
-            percentage-positioned cards regardless of viewport width */}
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }}
         >
+          {/* Scattered filler stars — the night sky the constellation sits in */}
+          {bgStars.map((s, i) => (
+            <circle
+              key={`bg-${i}`}
+              cx={s.x}
+              cy={s.y}
+              r={s.r}
+              fill="rgba(58,46,36,0.4)"
+              style={{
+                transformOrigin: `${s.x}px ${s.y}px`,
+                animation: `twinkle ${s.dur}s ease-in-out ${s.delay}s infinite`,
+                ['--star-min' as string]: 0.15,
+                ['--star-max' as string]: 0.75,
+              }}
+            />
+          ))}
+
+          {/* Dotted lines threading the project-stars together, scaled in %
+              so they always line up with the percentage-positioned cards */}
           {links.map(([a, b], i) => (
             <line
               key={i}
@@ -1580,34 +1435,44 @@ function ProjectsSection({ onOpen }: { onOpen: (p: typeof PROJECTS[0]) => void }
               y1={a.center.y}
               x2={b.center.x}
               y2={b.center.y}
-              stroke="rgba(58,46,36,0.16)"
+              stroke="rgba(58,46,36,0.18)"
               strokeWidth={0.12}
               strokeDasharray="0.6 1.4"
               strokeLinecap="round"
             />
           ))}
+
+          {/* The project stars themselves — bright, accent-colored, and
+              pulsing, so each one clearly reads as "this is a project" */}
           {PROJECTS.map((p) => (
-            <circle key={p.id} cx={p.center.x} cy={p.center.y} r={0.45} fill="rgba(58,46,36,0.22)" />
+            <g key={p.id}>
+              <circle
+                cx={p.center.x}
+                cy={p.center.y}
+                r={1.6}
+                fill={`rgba(${hexToRgb(p.accent)},0.16)`}
+                style={{
+                  transformOrigin: `${p.center.x}px ${p.center.y}px`,
+                  animation: `starPulse ${4 + p.depth}s ease-in-out infinite`,
+                }}
+              />
+              <circle cx={p.center.x} cy={p.center.y} r={0.55} fill={p.accent} />
+              <circle cx={p.center.x} cy={p.center.y} r={0.22} fill="#fff" opacity={0.9} />
+            </g>
           ))}
         </svg>
 
         {PROJECTS.map((p) => {
-          // Foreground (higher depth) cards drift more with the cursor;
-          // background cards barely move — the classic parallax depth cue.
+          // Foreground (higher depth) stars drift more with the cursor;
+          // background stars barely move — the classic parallax depth cue.
           const drift = p.depth * 6
           return (
-            <div
+            <ConstellationStar
               key={p.id}
-              style={{
-                position: 'absolute',
-                ...p.pos,
-                zIndex: p.depth,
-                transform: `translate(${px * drift}px, ${py * drift}px)`,
-                transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
-              }}
-            >
-              <ProjectCard project={p} onOpen={onOpen} />
-            </div>
+              project={p}
+              onOpen={onOpen}
+              drift={{ x: px * drift, y: py * drift }}
+            />
           )
         })}
       </div>
@@ -1700,10 +1565,10 @@ function AboutSection() {
                 transform: 'translate(-50%, -50%)',
                 width: '280px',
                 height: '320px',
-                background: 'linear-gradient(145deg, #ffffff, #ede8e0)',
+                background: 'linear-gradient(145deg, #f7f3ee, #e6ded2)',
                 borderRadius: '36px',
                 boxShadow:
-                  '0 32px 80px rgba(0,0,0,0.18), 0 12px 32px rgba(0,0,0,0.10), inset 0 2px 0 rgba(255,255,255,0.95)',
+                  '0 32px 80px rgba(58,46,36,0.18), 0 12px 32px rgba(58,46,36,0.10), inset 0 2px 0 rgba(255,250,245,0.5)',
                 padding: '32px',
                 animation: 'floatA 8s ease-in-out infinite',
               }}
@@ -1715,7 +1580,7 @@ function AboutSection() {
                   borderRadius: '16px',
                   padding: '16px',
                   marginBottom: '16px',
-                  boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)',
+                  boxShadow: 'inset 0 2px 4px rgba(58,46,36,0.3)',
                 }}
               >
                 <div style={{ display: 'flex', gap: '6px', marginBottom: '10px' }}>
@@ -1774,7 +1639,7 @@ function AboutSection() {
                   padding: '10px 18px',
                   borderRadius: '100px',
                   background: `linear-gradient(145deg, ${bg}, ${bg}cc)`,
-                  boxShadow: '0 6px 16px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.8)',
+                  boxShadow: '0 6px 16px rgba(58,46,36,0.10), inset 0 1px 0 rgba(255,250,245,0.4)',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontSize: '12px',
                   fontWeight: 700,
@@ -1863,8 +1728,8 @@ function ToolObject({ tool, delay }: { tool: typeof TOOLS[0]; delay: string }) {
         borderRadius: '20px',
         background: `linear-gradient(145deg, ${tool.bg}, ${tool.bg}bb)`,
         boxShadow: hov
-          ? `0 16px 40px rgba(0,0,0,0.16), 0 6px 16px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8)`
-          : `0 6px 18px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.7)`,
+          ? `0 16px 40px rgba(58,46,36,0.16), 0 6px 16px rgba(58,46,36,0.08), inset 0 1px 0 rgba(255,250,245,0.4)`
+          : `0 6px 18px rgba(58,46,36,0.10), inset 0 1px 0 rgba(255,255,255,0.7)`,
         transform: hov ? 'translateY(-8px) scale(1.06)' : 'none',
         transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
         animationDelay: delay,
@@ -1970,7 +1835,7 @@ function VaultSection() {
               borderRadius: '24px',
               padding: '28px',
               boxShadow:
-                '0 32px 80px rgba(0,0,0,0.5), 0 12px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06)',
+                '0 32px 80px rgba(58,46,36,0.5), 0 12px 32px rgba(58,46,36,0.3), inset 0 1px 0 rgba(255,255,255,0.06)',
             }}
           >
             {/* Title bar */}
@@ -2071,9 +1936,9 @@ function ContactSection() {
           style={{
             padding: '80px 60px',
             borderRadius: '48px',
-            background: 'linear-gradient(145deg, #ffffff, #ede8e0)',
+            background: 'linear-gradient(145deg, #f7f3ee, #e6ded2)',
             boxShadow:
-              '0 60px 120px rgba(0,0,0,0.16), 0 24px 60px rgba(0,0,0,0.10), inset 0 2px 0 rgba(255,255,255,0.95), inset 0 -6px 12px rgba(0,0,0,0.04)',
+              '0 60px 120px rgba(58,46,36,0.16), 0 24px 60px rgba(58,46,36,0.10), inset 0 2px 0 rgba(255,250,245,0.5), inset 0 -6px 12px rgba(58,46,36,0.04)',
             position: 'relative',
             animation: 'floatD 10s ease-in-out infinite',
           }}
