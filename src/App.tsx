@@ -207,13 +207,16 @@ function FloatingNav({ onNav: _onNav }: { onNav: (id: string) => void }) {
         gap: '4px',
         padding: '10px 18px',
         background: scrolled
-          ? 'linear-gradient(160deg, rgba(255,255,255,0.96), rgba(245,240,235,0.94))'
-          : 'linear-gradient(160deg, rgba(255,255,255,0.88), rgba(245,240,235,0.84))',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
+          ? 'linear-gradient(160deg, rgba(255,255,255,0.5), rgba(245,240,235,0.32))'
+          : 'linear-gradient(160deg, rgba(255,255,255,0.28), rgba(245,240,235,0.16))',
+        backdropFilter: 'blur(22px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(22px) saturate(180%)',
         borderRadius: '100px',
-        boxShadow: scrolled ? claySoft('md') : claySoft('sm'),
-        transition: 'box-shadow 0.3s ease',
+        border: '1px solid rgba(255,255,255,0.45)',
+        boxShadow: scrolled
+          ? '0 12px 36px -8px rgba(58,46,36,0.18), 0 3px 10px rgba(58,46,36,0.08), inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(255,255,255,0.12)'
+          : '0 8px 26px -8px rgba(58,46,36,0.12), 0 2px 6px rgba(58,46,36,0.05), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(255,255,255,0.1)',
+        transition: 'background 0.3s ease, box-shadow 0.3s ease',
       }}
     >
       {links.map((label, i) => (
@@ -241,11 +244,13 @@ function NavItem({ label, onClick }: { label: string; onClick: () => void }) {
         color: hov ? '#1a1714' : '#6b6460',
         padding: '6px 14px',
         borderRadius: '100px',
-        border: 'none',
         cursor: 'pointer',
-        background: hov ? 'linear-gradient(160deg, #f7f3ee, #e6ded2)' : 'transparent',
+        background: hov ? 'rgba(255,255,255,0.35)' : 'transparent',
+        border: hov ? '1px solid rgba(255,255,255,0.5)' : '1px solid transparent',
+        backdropFilter: hov ? 'blur(8px)' : 'none',
+        WebkitBackdropFilter: hov ? 'blur(8px)' : 'none',
         transform: hov ? 'translateY(-2px)' : 'none',
-        boxShadow: hov ? claySoft('sm') : 'none',
+        boxShadow: hov ? '0 4px 14px -4px rgba(58,46,36,0.16), inset 0 1px 0 rgba(255,255,255,0.5)' : 'none',
         transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
       }}
     >
@@ -841,19 +846,69 @@ function ConstellationStar({
         {project.category}
       </div>
 
-      {/* Hit target over the star itself — the glowing dot is drawn in the
-          SVG layer behind; this just makes it clickable/hoverable and grows
-          a soft ring around it on hover */}
+      {/* The star itself — soft blurred halo, solid accent core, and a tiny
+          white center point, all fixed-px HTML circles so they stay
+          perfectly round no matter how wide the section is (an SVG
+          circle here would get squashed into an ellipse). Hover grows a
+          ring around it. */}
       <div
         style={{
-          width: hov ? '26px' : '18px',
-          height: hov ? '26px' : '18px',
-          borderRadius: '50%',
-          border: `2px solid ${project.accent}`,
-          opacity: hov ? 0.9 : 0,
-          transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          position: 'relative',
+          width: '30px',
+          height: '30px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
-      />
+      >
+        <div
+          style={{
+            position: 'absolute',
+            width: hov ? '34px' : '26px',
+            height: hov ? '34px' : '26px',
+            borderRadius: '50%',
+            background: `radial-gradient(circle, rgba(${hexToRgb(project.accent)},0.5) 0%, rgba(${hexToRgb(project.accent)},0) 72%)`,
+            filter: 'blur(3px)',
+            animation: `starPulse ${4 + project.depth}s ease-in-out infinite`,
+            transition: 'width 0.3s ease, height 0.3s ease',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            width: hov ? '28px' : '20px',
+            height: hov ? '28px' : '20px',
+            borderRadius: '50%',
+            border: `2px solid ${project.accent}`,
+            opacity: hov ? 0.85 : 0,
+            transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          }}
+        />
+        <div
+          style={{
+            position: 'relative',
+            width: hov ? '11px' : '8px',
+            height: hov ? '11px' : '8px',
+            borderRadius: '50%',
+            background: project.accent,
+            boxShadow: '0 2px 6px rgba(58,46,36,0.35)',
+            transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '22%',
+              left: '22%',
+              width: '32%',
+              height: '32%',
+              borderRadius: '50%',
+              background: '#fff',
+              opacity: 0.85,
+            }}
+          />
+        </div>
+      </div>
     </div>
   )
 }
@@ -1313,24 +1368,28 @@ function ProjectsSection({ onOpen }: { onOpen: (p: typeof PROJECTS[0]) => void }
   const px = mouse.x - 0.5
   const py = mouse.y - 0.5
 
-  // Connector order — a hand-picked path through the constellation so the
-  // dotted line reads as a deliberate route between nodes, not noise.
-  const order = ['acadex', 'forgex', 'athstudios', 'dapres', 'lane-academy']
+  // Connector order — traces the outer perimeter of the five nodes (a clean
+  // closed loop) instead of zig-zagging across the middle, so the lines
+  // never cross each other.
+  const order = ['acadex', 'forgex', 'lane-academy', 'dapres', 'athstudios', 'acadex']
   const byId = Object.fromEntries(PROJECTS.map((p) => [p.id, p]))
   const links = order.slice(0, -1).map((id, i) => [byId[id], byId[order[i + 1]]] as const)
 
   // Deterministic pseudo-random scatter of small background stars — filler
   // points in the constellation, distinct from the project "stars" below.
   // Memoized so they don't re-roll on every mousemove-driven re-render.
+  // Rendered as real HTML circles (fixed px) rather than SVG, so they stay
+  // perfectly round instead of getting squashed into ellipses by the
+  // section's wide aspect ratio.
   const bgStars = useMemo(() => {
     const rand = (seed: number) => {
       const x = Math.sin(seed * 12.9898) * 43758.5453
       return x - Math.floor(x)
     }
-    return Array.from({ length: 46 }, (_, i) => ({
+    return Array.from({ length: 34 }, (_, i) => ({
       x: rand(i * 3.1) * 100,
       y: rand(i * 3.1 + 1.7) * 100,
-      r: 0.12 + rand(i * 3.1 + 2.9) * 0.22,
+      r: 1.5 + rand(i * 3.1 + 2.9) * 2,
       delay: rand(i * 3.1 + 4.4) * 5,
       dur: 2.4 + rand(i * 3.1 + 6.1) * 3,
     }))
@@ -1357,7 +1416,7 @@ function ProjectsSection({ onOpen }: { onOpen: (p: typeof PROJECTS[0]) => void }
         <ClayBlob
           size={280}
           color="linear-gradient(135deg, rgba(94,168,152,0.14), rgba(94,168,152,0.08))"
-          style={{ position: 'absolute', bottom: '100px', left: '-80px', animation: 'floatC 11s ease-in-out infinite' }}
+          style={{ position: 'absolute', bottom: '-140px', left: '-160px', animation: 'floatC 11s ease-in-out infinite' }}
         />
       </div>
 
@@ -1404,30 +1463,38 @@ function ProjectsSection({ onOpen }: { onOpen: (p: typeof PROJECTS[0]) => void }
           minHeight: '520px',
         }}
       >
+        {/* Scattered filler stars — the night sky the constellation sits in.
+            Plain HTML circles so they render as true dots regardless of
+            the section's aspect ratio. */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+          {bgStars.map((s, i) => (
+            <div
+              key={`bg-${i}`}
+              style={{
+                position: 'absolute',
+                left: `${s.x}%`,
+                top: `${s.y}%`,
+                width: `${s.r}px`,
+                height: `${s.r}px`,
+                borderRadius: '50%',
+                background: 'rgba(58,46,36,0.45)',
+                transform: 'translate(-50%, -50%)',
+                animation: `twinkle ${s.dur}s ease-in-out ${s.delay}s infinite`,
+                ['--star-min' as string]: 0.15,
+                ['--star-max' as string]: 0.8,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Dotted lines threading the project-stars together in a clean
+            closed loop around the perimeter, scaled in % so they always
+            line up with the percentage-positioned stars */}
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }}
         >
-          {/* Scattered filler stars — the night sky the constellation sits in */}
-          {bgStars.map((s, i) => (
-            <circle
-              key={`bg-${i}`}
-              cx={s.x}
-              cy={s.y}
-              r={s.r}
-              fill="rgba(58,46,36,0.4)"
-              style={{
-                transformOrigin: `${s.x}px ${s.y}px`,
-                animation: `twinkle ${s.dur}s ease-in-out ${s.delay}s infinite`,
-                ['--star-min' as string]: 0.15,
-                ['--star-max' as string]: 0.75,
-              }}
-            />
-          ))}
-
-          {/* Dotted lines threading the project-stars together, scaled in %
-              so they always line up with the percentage-positioned cards */}
           {links.map(([a, b], i) => (
             <line
               key={i}
@@ -1439,26 +1506,8 @@ function ProjectsSection({ onOpen }: { onOpen: (p: typeof PROJECTS[0]) => void }
               strokeWidth={0.12}
               strokeDasharray="0.6 1.4"
               strokeLinecap="round"
+              vectorEffect="non-scaling-stroke"
             />
-          ))}
-
-          {/* The project stars themselves — bright, accent-colored, and
-              pulsing, so each one clearly reads as "this is a project" */}
-          {PROJECTS.map((p) => (
-            <g key={p.id}>
-              <circle
-                cx={p.center.x}
-                cy={p.center.y}
-                r={1.6}
-                fill={`rgba(${hexToRgb(p.accent)},0.16)`}
-                style={{
-                  transformOrigin: `${p.center.x}px ${p.center.y}px`,
-                  animation: `starPulse ${4 + p.depth}s ease-in-out infinite`,
-                }}
-              />
-              <circle cx={p.center.x} cy={p.center.y} r={0.55} fill={p.accent} />
-              <circle cx={p.center.x} cy={p.center.y} r={0.22} fill="#fff" opacity={0.9} />
-            </g>
           ))}
         </svg>
 
